@@ -7,7 +7,7 @@ Summary:	Python 2 numerical facilities - deprecated packages
 Summary(pl.UTF-8):	Moduły do obliczeń numerycznych dla języka Python 2 - przestarzałe pakiety
 Name:		python-numpy-compat
 Version:	1.8.2
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Libraries/Python
