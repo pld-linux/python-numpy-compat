@@ -15,6 +15,7 @@ Source0:	http://downloads.sourceforge.net/numpy/numpy-%{version}.tar.gz
 # Source0-md5:	dd8eece8f6fda3a13836de4adbafb0cb
 Patch0:		python-numpy-fortran-version.patch
 URL:		http://sourceforge.net/projects/numpy/
+BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
 BuildRequires:	python-devel
 %endif
