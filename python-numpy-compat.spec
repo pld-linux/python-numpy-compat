@@ -7,7 +7,7 @@ Summary:	Python 2 numerical facilities - deprecated packages
 Summary(pl.UTF-8):	Moduły do obliczeń numerycznych dla języka Python 2 - przestarzałe pakiety
 Name:		python-numpy-compat
 Version:	1.8.2
-Release:	6
+Release:	7
 Epoch:		1
 License:	BSD
 Group:		Libraries/Python
@@ -196,11 +196,26 @@ CC="%{__cc}"; export CC
 CFLAGS="%{rpmcflags}"; export CFLAGS
 
 %if %{with python2}
-%py_build
+# %%py_build
+# exporting LDFLAGS breaks build, so open code macro:
+CFLAGS="${CFLAGS:-%rpmcppflags %rpmcflags}"; export CFLAGS; \
+CXXFLAGS="${CXXFLAGS:-%rpmcppflags %rpmcxxflags}"; export CXXFLAGS; \
+%{?__cc:CC="%{__cc}"; export CC;} \
+%{?__cxx:CXX="%{__cxx}"; export CXX;} \
+%{__python} setup.py \
+        build --build-base=build-2
+
 %endif
 
 %if %{with python3}
-%py3_build
+# %%py3_build
+# exporting LDFLAGS breaks build, so open code macro:
+CFLAGS="${CFLAGS:-%rpmcppflags %rpmcflags}"; export CFLAGS; \
+CXXFLAGS="${CXXFLAGS:-%rpmcppflags %rpmcxxflags}"; export CXXFLAGS; \
+%{?__cc:CC="%{__cc}"; export CC;} \
+%{?__cxx:CXX="%{__cxx}"; export CXX;} \
+%{__python3} setup.py build \
+        --build-base=build-3
 %endif
 
 %install
@@ -213,7 +228,7 @@ rm -rf $RPM_BUILD_ROOT
 %py_comp $RPM_BUILD_ROOT%{py_sitedir}
 
 # leave only numarray and oldnumeric
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/f2py
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/f2py2
 %{__rm} -r $RPM_BUILD_ROOT%{py_sitedir}/numpy/{compat,core,doc,distutils,f2py,fft,lib,linalg,ma,matrixlib,polynomial,random,testing,tests}
 %{__rm} $RPM_BUILD_ROOT%{py_sitedir}/numpy/*.py*
 %{__rm} $RPM_BUILD_ROOT%{py_sitedir}/numpy-%{version}-py*.egg-info
