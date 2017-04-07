@@ -192,30 +192,17 @@ pakietami Numeric.
 %patch0 -p1
 
 %build
-CC="%{__cc}"; export CC
-CFLAGS="%{rpmcflags}"; export CFLAGS
+# numpy.distutils uses CFLAGS/LDFLAGS as its own flags replacements,
+# instead of appending proper options (like -fPIC/-shared resp.)
+CFLAGS="%{rpmcflags} -fPIC"
+LDFLAGS="%{rpmldflags} -shared"
 
 %if %{with python2}
-# %%py_build
-# exporting LDFLAGS breaks build, so open code macro:
-CFLAGS="${CFLAGS:-%rpmcppflags %rpmcflags}"; export CFLAGS; \
-CXXFLAGS="${CXXFLAGS:-%rpmcppflags %rpmcxxflags}"; export CXXFLAGS; \
-%{?__cc:CC="%{__cc}"; export CC;} \
-%{?__cxx:CXX="%{__cxx}"; export CXX;} \
-%{__python} setup.py \
-        build --build-base=build-2
-
+%py_build
 %endif
 
 %if %{with python3}
-# %%py3_build
-# exporting LDFLAGS breaks build, so open code macro:
-CFLAGS="${CFLAGS:-%rpmcppflags %rpmcflags}"; export CFLAGS; \
-CXXFLAGS="${CXXFLAGS:-%rpmcppflags %rpmcxxflags}"; export CXXFLAGS; \
-%{?__cc:CC="%{__cc}"; export CC;} \
-%{?__cxx:CXX="%{__cxx}"; export CXX;} \
-%{__python3} setup.py build \
-        --build-base=build-3
+%py3_build
 %endif
 
 %install
