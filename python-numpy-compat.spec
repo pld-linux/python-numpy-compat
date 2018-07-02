@@ -7,13 +7,14 @@ Summary:	Python 2 numerical facilities - deprecated packages
 Summary(pl.UTF-8):	Moduły do obliczeń numerycznych dla języka Python 2 - przestarzałe pakiety
 Name:		python-numpy-compat
 Version:	1.8.2
-Release:	8
+Release:	9
 Epoch:		1
 License:	BSD
 Group:		Libraries/Python
 Source0:	http://downloads.sourceforge.net/numpy/numpy-%{version}.tar.gz
 # Source0-md5:	dd8eece8f6fda3a13836de4adbafb0cb
 Patch0:		python-numpy-fortran-version.patch
+Patch1:		numpy-mtrand-regenerated.patch
 URL:		http://sourceforge.net/projects/numpy/
 BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
@@ -190,6 +191,7 @@ pakietami Numeric.
 %prep
 %setup -q -n numpy-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 # numpy.distutils uses CFLAGS/LDFLAGS as its own flags replacements,
